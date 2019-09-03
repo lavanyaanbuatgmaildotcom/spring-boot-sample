@@ -20,6 +20,6 @@ public class TestApplication {
 	@GetMapping("")
     public String helloWorld() throws UnknownHostException {
 
-	    return "Hello from " + InetAddress.getLocalHost().getHostName();
+	    return "Hello from senthil" + InetAddress.getLocalHost().getHostName();
     }
 }
