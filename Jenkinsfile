@@ -1,5 +1,6 @@
 node {
- 
+     agent { dockerfile true }
+
     withMaven(maven:'maven') {
  
         stage('Checkout') {
