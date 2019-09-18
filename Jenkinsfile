@@ -22,7 +22,7 @@ node {
         stage("Docker build") {
         
         
-            sh "docker build -t test-0.0.1-SNAPSHOT.jar ."
+            sh "docker build ."
        
     }
         stage("Docker push") {
