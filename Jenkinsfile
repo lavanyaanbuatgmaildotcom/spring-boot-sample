@@ -18,17 +18,27 @@ node {
             env.version = pom.version
         }
  
-        stage('Image') {
-         //   dir ('discovery-service') {
-                def app = docker.build "localhost:5000/:${env.version}"
-                app.push()
-          //  }
+     
+        stage("Docker build") {
+        steps {
+        
+            sh "docker build -t psk4040/springbootsample."
         }
- 
-        stage ('Run') {
-            docker.image("localhost:5000/:${env.version}").run('-p 8761:8761 -h sample --name sample')
+    }
+        stage("Docker push") {
+            steps {
+        sh "docker login -u psk4040 -p psk4040"
+        sh "docker push psk4040/springbootsample"
+            }
         }
- 
+        stage("Deploy to staging") {
+            steps {
+        
+                sh "docker run -d --rm -p 8765:8080 --name springbotosample psk4040/springbootsample"
+            }
+        }
+      
+        
         stage ('Final') {
             build job: 'sample pipeline', wait: false
         }      
