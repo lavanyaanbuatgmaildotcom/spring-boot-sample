@@ -22,13 +22,13 @@ node {
         stage("Docker build") {
         
         
-            sh "docker build -t psk4040/springbootsample."
+            sh "docker build -t test-0.0.1-SNAPSHOT.jar ."
        
     }
         stage("Docker push") {
            
         sh "docker login -u psk4040 -p psk4040"
-        sh "docker push psk4040/springbootsample"
+        sh "docker push test-0.0.1-SNAPSHOT.jar"
           
         }
         stage("Deploy to staging") {
