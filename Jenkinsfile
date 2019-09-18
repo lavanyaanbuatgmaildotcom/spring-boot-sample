@@ -34,7 +34,7 @@ node {
         stage("Deploy to staging") {
           
         
-                sh "docker run -d --rm -p 8765:8080 --name springbotosample psk4040/springbootsample"
+                sh "docker run -d --group-add docker -v $(pwd)/jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/usr/bin/docker -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts"
           
         }
       
