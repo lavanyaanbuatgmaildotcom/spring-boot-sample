@@ -5,11 +5,6 @@ node {
         stage('Checkout') {
             git url: 'https://github.com/4040/spring-boot-sample.git', credentialsId: 'github-4040', branch: 'master'
         }
-     
-      stage('Initialize'){
-        def dockerHome = tool 'docker'
-        env.PATH = "${dockerHome}/bin:${env.PATH}"
-    }
  
         stage('Build') {
             sh 'mvn clean install'
@@ -18,27 +13,17 @@ node {
             env.version = pom.version
         }
  
-     
-        stage("Docker build") {
-        
-        
-            sh "docker build ."
-       
-    }
-        stage("Docker push") {
-           
-        sh "docker login -u psk4040 -p psk4040"
-        sh "docker push test-0.0.1-SNAPSHOT.jar"
-          
+        stage('Image') {
+         //   dir ('discovery-service') {
+                def app = docker.build "localhost:5000/:${env.version}"
+                app.push()
+          //  }
         }
-        stage("Deploy to staging") {
-          
-        
-          sh "docker run -d --rm -p 8765:8080 --name springbotosample psk4040/springbootsample"
-          
+ 
+        stage ('Run') {
+            docker.image("localhost:5000/:${env.version}").run('-p 8761:8761 -h sample --name sample')
         }
-      
-        
+ 
         stage ('Final') {
             build job: 'sample pipeline', wait: false
         }      
