@@ -18,6 +18,10 @@ node {
             env.version = pom.version
         }
  
+     stage ('Docker') 
+     { 
+            sh 'docker version' 
+     } 
      
         stage("Docker build") {
         
