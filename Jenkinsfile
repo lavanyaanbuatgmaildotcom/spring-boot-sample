@@ -12,7 +12,11 @@ node {
             print pom.version
             env.version = pom.version
         }
- 
+        stage('Initialize'){
+        def dockerHome = tool 'dockerengine'
+        env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
+  
         stage('Image') {
          //   dir ('discovery-service') {
                 def app = docker.build "localhost:5000/:${env.version}"
