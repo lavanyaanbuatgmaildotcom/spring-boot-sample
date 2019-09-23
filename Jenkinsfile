@@ -7,12 +7,7 @@ node {
         }
 
  
-         stage('Initialize')
-    {
-        def dockerHome = tool 'dockerengine'
-        def mavenHome  = tool 'maven'
-        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
-    }
+
         stage('Build') {
             sh 'mvn clean install'
              def pom = readMavenPom file:'pom.xml'
