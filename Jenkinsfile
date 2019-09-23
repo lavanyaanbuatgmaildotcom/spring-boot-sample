@@ -5,6 +5,11 @@ node {
         stage('Checkout') {
             git url: 'https://github.com/4040/spring-boot-sample.git', credentialsId: 'github-4040', branch: 'master'
         }
+         stage('Initialize')
+    {
+        def dockerHome = tool 'dockerengine'
+        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+    }
  
         stage('Build') {
             sh 'mvn clean install'
@@ -12,10 +17,7 @@ node {
             print pom.version
             env.version = pom.version
         }
-        stage('Initialize'){
-        def dockerHome = tool 'dockerengine'
-        env.PATH = "${dockerHome}/bin:${env.PATH}"
-        }
+
   
         stage('Image') {
          //   dir ('discovery-service') {
